@@ -79,9 +79,39 @@ const Tree = (array) => {
     }
   };
 
-  return { prettyPrint };
+  const insert = (value, current = root) => {
+    const currentNode = current;
+    if (sorted.includes(value)) {
+      console.error('Value already present - no duplicates allowed');
+    } else if (!currentNode.left || !currentNode.right) {
+      // We can make a leaf, so insert here
+      if (value < currentNode.data) {
+        currentNode.left = Node(value);
+      }
+      if (value > currentNode.data) {
+        currentNode.right = Node(value);
+      }
+    } else {
+      // Not at a leaf yet
+      if (value < currentNode.data) {
+        insert(value, currentNode.left);
+      }
+      if (value > currentNode.data) {
+        insert(value, currentNode.right);
+      }
+    }
+  };
+
+  return { prettyPrint, insert };
 };
 
 const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const newTree = Tree(testArray);
+newTree.prettyPrint();
+newTree.insert(50);
+newTree.insert(2);
+newTree.insert(200);
+newTree.insert(34);
+newTree.insert(7);
+newTree.insert(22);
 newTree.prettyPrint();
