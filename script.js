@@ -81,15 +81,24 @@ const Tree = (array) => {
 
   const insert = (value, current = root) => {
     const currentNode = current;
+    // XXX can we remove this? seems like extra work
     if (sorted.includes(value)) {
       console.error('Value already present - no duplicates allowed');
     } else if (!currentNode.left || !currentNode.right) {
       // We can make a leaf, so insert here
       if (value < currentNode.data) {
-        currentNode.left = Node(value);
+        if (!currentNode.left) {
+          currentNode.left = Node(value);
+        } else {
+          insert(value, currentNode.left);
+        }
       }
       if (value > currentNode.data) {
-        currentNode.right = Node(value);
+        if (!currentNode.right) {
+          currentNode.right = Node(value);
+        } else {
+          insert(value, currentNode.right);
+        }
       }
     } else {
       // Not at a leaf yet
@@ -107,11 +116,9 @@ const Tree = (array) => {
 
 const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const newTree = Tree(testArray);
-newTree.prettyPrint();
 newTree.insert(50);
 newTree.insert(2);
 newTree.insert(200);
 newTree.insert(34);
 newTree.insert(7);
 newTree.insert(22);
-newTree.prettyPrint();
