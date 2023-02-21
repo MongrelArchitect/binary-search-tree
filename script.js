@@ -261,12 +261,50 @@ const Tree = (array) => {
   };
 
   const height = (node) => {
+    // Calculate height of a given node
     if (!node) {
       return -1;
     }
     const leftHeight = height(node.left);
     const rightHeight = height(node.right);
     return Math.max(leftHeight, rightHeight) + 1;
+  };
+
+  const depth = (node, current = root, initDepth = 0) => {
+    // XXX lots of copy-paste from find method...maybe integrate them?
+    if (!node) {
+      return 'not in tree';
+    }
+    let nodeDepth = initDepth;
+    let currentNode = current;
+    // Found the value, so return the node
+    if (currentNode.data === node.data) {
+      return nodeDepth;
+    }
+    // Maybe it's to the left?
+    if (node.data < currentNode.data) {
+      if (currentNode.left) {
+        // Keep track of how deep we're going
+        nodeDepth += 1;
+        currentNode = currentNode.left;
+      } else {
+        // Smaller but there's no left node, so it's not in the tree
+        return nodeDepth;
+      }
+    }
+    // Or maybe it's to the right?
+    if (node.data > currentNode.data) {
+      if (currentNode.right) {
+        // Keep track of how deep we're going
+        nodeDepth += 1;
+        currentNode = currentNode.right;
+      } else {
+        // Larger but there's no right node, so it's not in the tree
+        return nodeDepth;
+      }
+    }
+    // Keep on searching if you can
+    return depth(node, currentNode, nodeDepth);
   };
 
   return {
@@ -279,6 +317,7 @@ const Tree = (array) => {
     inOrder,
     postOrder,
     height,
+    depth,
   };
 };
 
