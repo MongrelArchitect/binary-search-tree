@@ -260,6 +260,15 @@ const Tree = (array) => {
     return values;
   };
 
+  const height = (node) => {
+    if (!node) {
+      return -1;
+    }
+    const leftHeight = height(node.left);
+    const rightHeight = height(node.right);
+    return Math.max(leftHeight, rightHeight) + 1;
+  };
+
   return {
     prettyPrint,
     insert,
@@ -269,6 +278,7 @@ const Tree = (array) => {
     preOrder,
     inOrder,
     postOrder,
+    height,
   };
 };
 
