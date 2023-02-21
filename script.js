@@ -187,14 +187,38 @@ const Tree = (array) => {
     return find(value, currentNode);
   };
 
+  const levelOrder = (callback, queue = [root], values = []) => {
+    // Traverse in breadth-first level order
+    while (queue.length > 0) {
+      if (typeof callback === 'function') {
+        // Provide node to callback if it's there
+        callback(queue[0]);
+      } else {
+        // If not, keep track of the node values to return
+        values.push(queue[0].data);
+      }
+      // Enqueue nodes as we go
+      if (queue[0].left) {
+        queue.push(queue[0].left);
+      }
+      if (queue[0].right) {
+        queue.push(queue[0].right);
+      }
+      // Dequeue once we've worked with the node
+      queue.shift();
+      // Keep it rolling until there's nothing left in the queue
+      levelOrder(callback, queue, values);
+    }
+    return values;
+  };
+
   return {
-    prettyPrint, insert, remove, find,
+    prettyPrint, insert, remove, find, levelOrder,
   };
 };
 
 const testArray = [
   50, 2, 200, 34, 7, 22, 25, 220, 101, 1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67,
-  6345, 324, 55, 72, 19, 123, 341, 1212, 2423, 7341, 2, 6, 11, 10, 15, 18, 12,
 ];
 const newTree = Tree(testArray);
 newTree.prettyPrint();
