@@ -212,8 +212,63 @@ const Tree = (array) => {
     return values;
   };
 
+  const inOrder = (callback, currentNode = root, values = []) => {
+    // Traverse depth-first in order
+    if (!currentNode) {
+      return values;
+    }
+    inOrder(callback, currentNode.left, values);
+    // Use callback if it exists, or return node values otherwise
+    if (typeof callback === 'function') {
+      callback(currentNode);
+    } else {
+      values.push(currentNode.data);
+    }
+    inOrder(callback, currentNode.right, values);
+    return values;
+  };
+
+  const preOrder = (callback, currentNode = root, values = []) => {
+    // Traverse depth-first pre order
+    if (!currentNode) {
+      return values;
+    }
+    // Use callback if it exists, or return node values otherwise
+    if (typeof callback === 'function') {
+      callback(currentNode);
+    } else {
+      values.push(currentNode.data);
+    }
+    preOrder(callback, currentNode.left, values);
+    preOrder(callback, currentNode.right, values);
+    return values;
+  };
+
+  const postOrder = (callback, currentNode = root, values = []) => {
+    // Traverse depth-first post order
+    if (!currentNode) {
+      return values;
+    }
+    postOrder(callback, currentNode.left, values);
+    postOrder(callback, currentNode.right, values);
+    // Use callback if it exists, or return node values otherwise
+    if (typeof callback === 'function') {
+      callback(currentNode);
+    } else {
+      values.push(currentNode.data);
+    }
+    return values;
+  };
+
   return {
-    prettyPrint, insert, remove, find, levelOrder,
+    prettyPrint,
+    insert,
+    remove,
+    find,
+    levelOrder,
+    preOrder,
+    inOrder,
+    postOrder,
   };
 };
 
