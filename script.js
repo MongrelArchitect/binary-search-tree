@@ -112,7 +112,7 @@ const Tree = (array) => {
   };
 
   const remove = (value, current = root, previous = null) => {
-    const currentNode = current;
+    let currentNode = current;
     const previousNode = previous;
     if (currentNode.data === value) {
       // Found the value, so delete it
@@ -138,7 +138,19 @@ const Tree = (array) => {
         }
       } else if (currentNode.left && currentNode.right) {
         console.log(`${value} found w/ two kids - HARDEST TO DELETE`);
-        // gotta delete that bad boy
+        // Keep track of the node we've found to replace it's data
+        const toReplace = currentNode;
+        // Start searching for the successor node on the right subtree
+        const rightSubRoot = currentNode.right;
+        // Keep going left until we find the smallest node on the right
+        currentNode = currentNode.right;
+        while (currentNode.left) {
+          currentNode = currentNode.left;
+        }
+        // Replace the original node's data with the sucessor's data
+        toReplace.data = currentNode.data;
+        // Remove the successor node, start search at original subtree
+        remove(toReplace.data, rightSubRoot);
       }
     } else {
       console.log(`${value} not here`);
@@ -160,25 +172,13 @@ const Tree = (array) => {
   return { prettyPrint, insert, remove };
 };
 
-const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+const testArray = [
+  50, 2, 200, 34, 7, 22, 25, 220, 101, 1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67,
+  6345, 324, 55, 72, 19, 123, 341, 1212, 2423, 7341, 2, 6, 11, 10, 15, 18, 12,
+];
 const newTree = Tree(testArray);
-newTree.insert(50);
-newTree.insert(2);
-newTree.insert(200);
-newTree.insert(34);
-newTree.insert(7);
-newTree.insert(22);
-newTree.insert(25);
-newTree.insert(220);
-newTree.insert(101);
-newTree.insert(55);
-newTree.insert(72);
-newTree.insert(19);
-newTree.insert(123);
-newTree.insert(341);
-newTree.insert(1212);
-newTree.insert(2423);
-newTree.insert(7341);
 newTree.prettyPrint();
-newTree.remove(324);
+newTree.remove(5);
+newTree.prettyPrint();
+newTree.remove(23);
 newTree.prettyPrint();
