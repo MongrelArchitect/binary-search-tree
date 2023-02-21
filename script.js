@@ -159,7 +159,37 @@ const Tree = (array) => {
     }
   };
 
-  return { prettyPrint, insert, remove };
+  const find = (value, current = root) => {
+    let currentNode = current;
+    // Found the value, so return the node
+    if (currentNode.data === value) {
+      return currentNode;
+    }
+    // Maybe it's to the left?
+    if (value < currentNode.data) {
+      if (currentNode.left) {
+        currentNode = currentNode.left;
+      } else {
+        // Smaller but there's no left node, so it's not in the tree
+        return null;
+      }
+    }
+    // Or maybe it's to the right?
+    if (value > currentNode.data) {
+      if (currentNode.right) {
+        currentNode = currentNode.right;
+      } else {
+        // Larger but there's no right node, so it's not in the tree
+        return null;
+      }
+    }
+    // Keep on searching if you can
+    return find(value, currentNode);
+  };
+
+  return {
+    prettyPrint, insert, remove, find,
+  };
 };
 
 const testArray = [
