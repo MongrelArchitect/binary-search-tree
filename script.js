@@ -117,16 +117,14 @@ const Tree = (array) => {
     if (currentNode.data === value) {
       // Found the value, so delete it
       if (!currentNode.left && !currentNode.right) {
-        // No children, easy to remove
-        console.log(`${value} found w/ no children - EASY DELETE!`);
+        // Deleting a leaf node (no children)
         if (value < previousNode.data) {
           previousNode.left = null;
         } else {
           previousNode.right = null;
         }
       } else if (!currentNode.left || !currentNode.right) {
-        // One child, less easy to remove
-        console.log(`${value} found w/ one child - NOT SO EASY DELETE`);
+        // Deleting a node with one child
         if (value < previousNode.data) {
           previousNode.left = currentNode.left
             ? currentNode.left
@@ -136,8 +134,8 @@ const Tree = (array) => {
             ? currentNode.left
             : currentNode.right;
         }
+        // Deleting a node with two children
       } else if (currentNode.left && currentNode.right) {
-        console.log(`${value} found w/ two kids - HARDEST TO DELETE`);
         // Keep track of the node we've found to replace it's data
         const toReplace = currentNode;
         // Start searching for the successor node on the right subtree
@@ -152,19 +150,14 @@ const Tree = (array) => {
         // Remove the successor node, start search at original subtree
         remove(toReplace.data, rightSubRoot);
       }
-    } else {
-      console.log(`${value} not here`);
+    } else if (value < currentNode.data) {
       // value not here so keep looking
-      if (value < currentNode.data) {
-        console.log('moving LEFT');
-        if (currentNode.left) {
-          remove(value, currentNode.left, currentNode);
-        }
-      } else {
-        console.log('moving RIGHT');
-        if (currentNode.right) {
-          remove(value, currentNode.right, currentNode);
-        }
+      // Move left
+      if (currentNode.left) {
+        remove(value, currentNode.left, currentNode);
+      } else if (currentNode.right) {
+        // Move right
+        remove(value, currentNode.right, currentNode);
       }
     }
   };
