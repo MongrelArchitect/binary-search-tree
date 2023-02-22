@@ -271,7 +271,8 @@ const Tree = (array) => {
   };
 
   const depth = (node, current = root, initDepth = 0) => {
-    // XXX lots of copy-paste from find method...maybe integrate them?
+    // XXX
+    // lots of copy-paste from find method...integrate them somehow?
     if (!node) {
       return 'not in tree';
     }
@@ -307,6 +308,24 @@ const Tree = (array) => {
     return depth(node, currentNode, nodeDepth);
   };
 
+  const isBalanced = () => {
+    // Can't be balanced if it doesn't exist
+    if (!root) {
+      return false;
+    }
+
+    // Check & compare height of root subtrees
+    const leftSubTree = root.left;
+    const rightSubTree = root.right;
+    const leftHeight = height(leftSubTree);
+    const rightHeight = height(rightSubTree);
+    const difference = Math.abs(leftHeight - rightHeight);
+    if (difference > 1) {
+      return false;
+    }
+    return true;
+  };
+
   return {
     prettyPrint,
     insert,
@@ -318,11 +337,14 @@ const Tree = (array) => {
     postOrder,
     height,
     depth,
+    isBalanced,
   };
 };
 
 const testArray = [
   50, 2, 200, 34, 7, 22, 25, 220, 101, 1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67,
 ];
+
 const newTree = Tree(testArray);
 newTree.prettyPrint();
+console.log(newTree.isBalanced());
