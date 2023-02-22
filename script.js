@@ -66,7 +66,7 @@ const Tree = (array) => {
   // Sort, then remove duplicates by converting to set & back to array
   const sorted = [...new Set(mergeSort(array))];
 
-  const root = buildTree(sorted);
+  let root = buildTree(sorted);
 
   // For a nice pretty display of the tree
   const prettyPrint = (node = root, prefix = '', isLeft = true) => {
@@ -326,18 +326,24 @@ const Tree = (array) => {
     return true;
   };
 
+  const rebalance = () => {
+    const ordered = inOrder();
+    root = buildTree(ordered);
+  };
+
   return {
-    prettyPrint,
-    insert,
-    remove,
-    find,
-    levelOrder,
-    preOrder,
-    inOrder,
-    postOrder,
-    height,
     depth,
+    find,
+    height,
+    inOrder,
+    insert,
     isBalanced,
+    levelOrder,
+    postOrder,
+    preOrder,
+    prettyPrint,
+    rebalance,
+    remove,
   };
 };
 
@@ -347,4 +353,3 @@ const testArray = [
 
 const newTree = Tree(testArray);
 newTree.prettyPrint();
-console.log(newTree.isBalanced());
